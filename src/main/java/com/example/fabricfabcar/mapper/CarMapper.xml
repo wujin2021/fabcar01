@@ -1,0 +1,15 @@
+<!--
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+&lt;!&ndash;<mapper namespace="com.example.fabricfabcar.mapper.CarMapper">
+    <select id="getAll" resultType="Car">
+        select * from cars
+    </select>
+</mapper>&ndash;&gt;
+<mapper namespace="com.example.fabricfabcar.mapper.CarMapper">
+    <insert id="insertCar">
+        insert into cars values (#{key}, #{make}, #{model}, #{colour}, #{owner})
+    </insert>
+</mapper>
+-->
