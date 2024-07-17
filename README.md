@@ -98,61 +98,43 @@ cd first-network
       }
 ```
 
-**Setup appconfig.json**
+**配置fabric.config.properties文件**
 ```
-{ "email": { "admin":"admin_email@gmail.com", "auth": { "user": "admin_email@gmail.com", "pass": "password" }, "service": "Gmail", "emailVerification": 1 }, "database": { "adapter": "sails-postgresql", "user": "admin", "password": "adminpassword", "port": "5432", "host": "localhost", "database": "airmed" }, "session": { "name": "sails.sid", "secret": "secretKey", "redis": { "url": "redis://: redisPassword@127.0.0.1.com:6379/15", "host": "127.0.0.1", "port": 6379, "pass": "redisPassword", "db": 15 } }, "ipfs": { "host":"127.0.0.1", "port":"5001" } }
+# 网络配置文件路径
+networkConfigPath = src/main/resources/connection.json
+# 用户证书路径
+certificatePath = src/main/resources/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/signcerts/User1@org1.example.com-cert.pem
+# 用户私钥路径
+privateKeyPath = src/main/resources/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/priv_sk
+# 通道名字
+channelName = mychannel
+# 链码名字
+contractName = fabcar
 ```
+**配置相关生成文件**
 
-**Edit config/policies.js**
+把/go/src/github.com/hyperledger/fabric/fabric-samples/test-network/organizations下的生成的两个文件夹ordererOrganizations.example.com 和 peerOrganizations 下载下来，更换在idea项目目录resources下crypto-config文件夹下的文件
 
-For testing purposes, remove comment from line 20. 
-That is, line 
-```
-//'*': 'isHTTPS',
-```
-should now look like
-```
-'*': 'isHTTPS',
-```
+**配置链码文件**
 
-**Edit Hyperledger configuration file**
+将~/go/src/github.com/hyperledger/fabric-samples/chaincode/fabcar下的链码文件fabcar.go更换为本项目目录下的fabcar.go文件
 
-In the file fabric-api/config/configfile.yaml, you should replace the default admin certificate paths with the actual path of your project. Please note that you should only modify paths from adminPrivateKey in Line 44 under Org1, and in Line 56 under Org2. Everything else must remain unaltered.
-
-As a further advice, please make sure that fabric-sample and airmedfoundation-terminal are in the same directory. 
-
-The paths should look as follows:\
-/home/root/Desktop/fabric-sample\
-/home/root/Desktop/airmedfoundation-terminal
-
-## Running the application
+## 运行程序
 Running the application is very simple. You just need to:
 
-- Run IPFS
+- 运行Hyperledger Fabric
 ```
-ipfs daemon &
-```
-
-- Run the server
-```
-node ./node_modules/sails/bin/sails.js l --redis --safe
+cd ~/go/src/github.com/hyperledger/fabric-samples/fabcar
+docker rm -f | $(docker ps -aq)
+./startFabric.sh
 ```
 
-- Run the sync process
+- 运行前端界面
 ```
-./init.sh &
+npm start
 ```
 
-And now you're ready to go!
 
 ---
-
-**Contact:** This open source project is brought to you by [The Chain](http://thechain.tech/), a software shop specialized in the development of applications and services based on blockchain technology and artificial intelligence. Any questions that might arise should be sent to the project's maintainers. We will be happy to assist you.
-
-#### E-mail: admin@thechain.tech
-
-**License:** This project is under the GNU Affero General Public License v3.0. 
-
-<a href="https://airmedfoundation.thechain.tech/"><img src="https://media.licdn.com/dms/image/C4E0BAQGs_7h67j1y0w/company-logo_400_400/0?e=1574899200&v=beta&t=KLfoiPbZSGZvBHmqhxCTYC211phfpr46j4pedsZMJ8I" width="200" height="200" /></a>
 
 
