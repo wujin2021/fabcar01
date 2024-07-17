@@ -12,82 +12,90 @@
 * Node.js
 * NPM
 * NVM
+* Golang
 * Hyperledger Fabric
 
-Here we guide you through this process.
+下面将指导您完成此过程：
 
-**Interplanetary File System (IPFS)**
+**JDK1.8**
 
-Project website: https://ipfs.io/
+项目网站: https://www.oracle.com/technetwork/java/javase/downloads
 
 ```
-wget https://dist.ipfs.io/go-ipfs/v0.4.19/go-ipfs_v0.4.19_linux-amd64.tar.gz
-tar xvfz go-ipfs_v0.4.19_linux-amd64.tar.gz
-cd go-ipfs
-sudo ./install.sh
-ipfs init
+下载安装JDK1.8并配置系统环境变量
 ```
 
-**Docker and Docker Compose**
+**JDK1.8**
 
-Project website: https://docs.docker.com/install/linux/docker-ce/ubuntu/ (Docker)\
-Project website: https://docs.docker.com/compose/install/ (Docker Compose)
+项目网站: https://dev.mysql.com/downloads/mysql/
+
+```
+下载安装MySQL8.0.12并配置相关文件
+```
+
+**Docker 和 Docker Compose**
+
+项目网站: https://docs.docker.com/install/linux/docker-ce/ubuntu/ (Docker)\
+项目网站: https://docs.docker.com/compose/install/ (Docker Compose)
 
 ```
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 sudo apt-get install docker-compose
 ```
 
-**Node.js, NPM and NVM**
+**Node.js, NPM 和 NVM**
 
-Project website: https://nodejs.org/en/ (Node.js)\
-Project website: https://www.npmjs.com/ (NPM)\
-Project repo: https://github.com/creationix/nvm#installation-and-update (NVM)
+项目网站: https://nodejs.org/en/ (Node.js)\
+项目网站: https://www.npmjs.com/ (NPM)\
+项目仓库: https://github.com/creationix/nvm#installation-and-update (NVM)
 
 ```
 sudo apt-get install nodejs
-nvm install 8.15.0
-nvm use 8.15.0
+nvm install 12.5.0
+nvm use 12.5.0
+```
+
+**Golang**
+
+项目网站: https://go.dev/dl/
+
+```
+sudo apt install wget
+wget https://go.dev/dl/go1.19.2.linux-amd64.tar.gz
+sudo tar -zxvf go1.19.2.linux-amd64.tar.gz -C /usr/local/
+sudo vim ~/.bashrc
+在.bashrc中添加以下语句配置环境变量：
+  export GOROOT =/usr/local/go
+  export GOPATH=$HOME/go
+  export PATH=$GOROOT/bin:$PATH
+source ~/.hashrc
+go version
 ```
 
 **Hyperledger Fabric**
 
-Project website: https://www.hyperledger.org/projects/fabric
+项目网站: https://www.hyperledger.org/projects/fabric
 
 ```
 git clone https://github.com/hyperledger/fabric-samples
 cd fabric-samples
-./scripts/bootstrap.sh 1.4.0 1.4.0
+./scripts/bootstrap.sh 1.1.0 1.1.0
 cd first-network
 ./byfn.sh generate
 ./byfn.sh up
 ```
 
-**Download Airmed Foundation**
+## 配置文件修改
 
-Project website: https://airmedfoundation.thechain.tech/
+**配置connection.json文件**
 
-```
-git clone https://github.com/the-chain/airmedfoundation-terminal
-cd airmedfoundation-terminal
-npm install 
-```
-
-**Install Chaincode to Hyperledger Network**
+自行更换部署链码的ip，以及各个证书和私钥路径。
 
 ```
-cd airmedfoundation-terminal
-docker exec -it cli peer chaincode instantiate -C mychannel -l "node" -n airmed -v v1 -c '{"Args":[]}' -o orderer.example.com:7050 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-docker exec -it cli peer chaincode instantiate -C mychannel -l "node" -n secureRec -v v1 -c '{"Args":[]}' -o orderer.example.com:7050 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-```
-
-## Configuration of Airmed Foundation's server
-
-**Edit config/datastores.js**
-
-Change values to connect to postgreSQL. In order to install postgreSQL, you can run the following command in the terminal:
-```
-docker-compose up -d
+"url": "grpc://10.10.9.128:7050"
+"adminPrivateKeyPEM": {
+        "path": "src/main/resources/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore/1deeab5433fa6e5f045eb763109d6165268fba153211af1281f00d45f54b1022_sk"
+      }
 ```
 
 **Setup appconfig.json**
